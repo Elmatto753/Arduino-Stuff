@@ -16,6 +16,27 @@ LiquidCrystal lcd(8, 9, 4, 5, 6, 7); //These are the pins used on this shield
 #define btnLEFT   3
 #define btnSELECT 4
 #define btnNONE   5
+#define PAGEMAX   2
+
+typedef struct MOVE {
+
+  char Name[ ];
+  byte Power;
+  byte Accuracy;
+  
+}Move;
+
+typedef struct MOVESET {
+
+  Move firstMove;
+
+  Move secondMove;
+
+  Move thirdMove;
+
+  Move fourthMove;
+  
+}Moveset;
 
 /*-----( Declare Variables )-----*/
 int lcd_key       = 0;
@@ -23,18 +44,24 @@ int adc_key_in    = 0;
 int adc_key_prev  = 0;
 byte rowSelected   = 0;
 byte page          = 1;
+Moveset Moves;
+
+/*-----( Temporary things, should be provided by other sections of project )----*/
+
+
+
 
 void setup()   /*----( SETUP: RUNS ONCE )----*/
 {
   lcd.begin(16, 2);              // start the lcd object
   
   lcd.setCursor(0,0);
-  lcd.print("Fire Blast");
+  lcd.print("kek");
   lcd.setCursor(14,0);
   lcd.print("<-");
 
   lcd.setCursor(0,1);
-  lcd.print("Pound");
+  lcd.print("top kek");
   
   //lcd.setCursor(10,1);
   //lcd.print("A="); // For display of A0 Analog values from button push
@@ -59,6 +86,9 @@ void loop()   /*----( LOOP: RUNS CONSTANTLY )----*/
 
 //  lcd.setCursor(0,1);            // move to the begining of the second line
 
+  
+  getMoveSet(Moves);
+  
   if (lcd_key==btnDOWN)               // depending on which button was pushed, we perform an action
   {
     lcd.setCursor(14,rowSelected);
@@ -99,11 +129,11 @@ void loop()   /*----( LOOP: RUNS CONSTANTLY )----*/
   if (page==1)
   {
   lcd.setCursor(0,0);
-  lcd.print("Fire Blast");
+  lcd.print(Moves.firstMove.Name[14]);
   lcd.setCursor(14,0);
   
   lcd.setCursor(0,1);
-  lcd.print("Pound");
+  lcd.print(Moves.firstMove.Name[14]);
   }
 
   else if(page == 2)
@@ -182,14 +212,37 @@ void switchPage()
   lcd.print("              ");
   lcd.setCursor(0,1);
   lcd.print("              ");
-  if(page==1)
-  {
-    page=2;
-  }
-  else
+  if(page==PAGEMAX)
   {
     page=1;
   }
+  else
+  {
+    page+=1;
+  }
 }
+
+void getMoveSet(Moveset Moves)
+{
+  char MoveName1[ ] = {"Fire Blast"};
+  char MoveName2[ ] = {"Pound"};
+  char MoveName3[ ] = {"Fire Bomb"};
+  char MoveName4[ ] = {"Tackle"};
+  Moves.firstMove.Name[14]=*MoveName1;
+  Moves.secondMove.Name[14]=*MoveName2;
+  Moves.thirdMove.Name[14]=*MoveName3;
+  Moves.fourthMove.Name[14]=*MoveName4;
+  
+}
+
+
+
+
+
+
+
+
+
+
 
 // Base code found at https://arduino-info.wikispaces.com/LCD-Pushbuttons
